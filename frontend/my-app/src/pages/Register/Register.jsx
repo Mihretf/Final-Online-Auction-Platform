@@ -15,17 +15,32 @@ export default function Register() {
   const [bankStatement, setBankStatement] = useState("");
   const [error, setError] = useState("");
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const data = await registerUser({
+  //       username,
+  //       email,
+  //       password,
+  //       phone,
+  //       role,
+  //       bankStatement,
+  //     });
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await registerUser({
-        username,
-        email,
-        password,
-        phone,
-        role,
-        bankStatement,
-      });
+  e.preventDefault();
+  try {
+    const data = new FormData(); // use FormData for file uploads
+    data.append("username", username);
+    data.append("email", email);
+    data.append("password", password);
+    data.append("phone", phone);
+    data.append("role", role);
+    if (bankStatement) data.append("bankStatement", bankStatement); // append file
+
+    const response = await registerUser(data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
       console.log("Registration successful:", data);
       setError("");
@@ -39,7 +54,7 @@ export default function Register() {
       return;
     }
 
-      // ✅ Redirect user based on role
+      // Redirect user based on role
       if (data.role === "admin") {
         navigate("/admin");
       } else if (data.role === "seller") {
@@ -131,17 +146,16 @@ export default function Register() {
             </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="bankStatement" className="form-label">Bank Statement URL</label>
-            <input
-              id="bankStatement"
-              type="text"
-              className="form-input"
-              value={bankStatement}
-              onChange={(e) => setBankStatement(e.target.value)}
-              placeholder="Enter bank statement URL"
-            />
-          </div>
+         <div className="form-group">
+  <label htmlFor="bankStatement" className="form-label">Bank Statement</label>
+  <input
+    id="bankStatement"
+    type="file"
+    className="form-input"
+    onChange={(e) => setBankStatement(e.target.files[0])} // store selected file
+  />
+</div>
+
 
           <button type="submit" className="register-button">
             Sign Up
