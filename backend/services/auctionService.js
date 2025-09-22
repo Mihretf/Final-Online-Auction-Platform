@@ -118,8 +118,19 @@ async function deleteAuction(id) {
     return { message: 'Auction deleted' };
 }
 
+async function getAuctionsByBidder(userId) {
+  // Get all bids by the user
+  const bids = await Bid.find({ bidder: userId }).populate("auctionId");
+
+  // Remove duplicates if the user has multiple bids on the same auction
+  const auctions = [...new Map(bids.map(b => [b.auctionId._id.toString(), b.auctionId])).values()];
+
+  return auctions; // just return the array
+}
+
 module.exports = {
     createAuction,
+    getAuctionsByBidder,
     getAllAuctions,
     getAuctionById,
     updateAuction,

@@ -1,5 +1,7 @@
 // controllers/auctionController.js
 const auctionService = require('../services/auctionService');
+const Auction = require('../models/AuctionsModel')
+const Item = require("../models/itemsModel")
 
 // Create a new auction
 exports.createAuction = async (req, res) => {
@@ -26,13 +28,17 @@ exports.getAllAuctions = async (req, res) => {
 // Get single auction by ID
 exports.getAuctionById = async (req, res) => {
   try {
-    const auction = await auctionService.getAuctionById(req.params.id);
+    const auction = await Auction.findById(req.params.id)
+      .populate("itemId")
+      // .populate("highestBidder");
+    if (!auction) return res.status(404).json({ message: "Auction not found" });
     res.json(auction);
-  } catch (error) {
-    console.error("Error fetching auction:", error);
-    res.status(404).json({ message: error.message });
+  } catch (err) {
+    console.error("Error fetching auction:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Update auction
 exports.updateAuction = async (req, res) => {
@@ -45,6 +51,24 @@ exports.updateAuction = async (req, res) => {
   }
 };
 
+exports.getMyBids = async (req, res) => {
+  try {
+    const userId = req.user._id; // from authMiddleware
+
+    // Get all bids by this user, populate auction info
+    const bids = await Bid.find({ bidderId: userId }).populate("auctionId");
+
+    // Extract unique auctions
+    const auctions = bids
+      .map(bid => bid.auctionId)
+      .filter((auction, index, self) => auction && self.findIndex(a => a._id.toString() === auction._id.toString()) === index);
+
+    res.json(auctions);
+  } catch (err) {
+    console.error("Error fetching my bids:", err);
+    res.status(500).json({ message: "Failed to fetch your bids." });
+  }
+};
 // Delete auction
 exports.deleteAuction = async (req, res) => {
   try {

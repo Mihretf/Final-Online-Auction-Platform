@@ -4,7 +4,8 @@ const {
   getAllAuctions,
   getAuctionById,
   updateAuction,
-  deleteAuction
+  getMyBids,
+  deleteAuction,
 } = require('../controllers/auctionController');
 const {authMiddleware} = require('../middleware/authMiddleware'); // fixed JWT auth
 
@@ -34,5 +35,9 @@ router.patch('/:id', authMiddleware, updateAuction);
 // @desc    Delete auction
 // @access  Protected
 router.delete('/:id', authMiddleware, deleteAuction);
+
+router.get("/my-bids" , authMiddleware, getMyBids
+)
+router.get("/:id" , authMiddleware, getAllAuctions)
 
 module.exports = router;

@@ -14,6 +14,7 @@ import PlaceBidPage from "./pages/PlaceBidPage/PlaceBidPage.jsx";
 import UsersPage from "./pages/UsersPage/UsersPage.jsx";
 import PendingItemsPage from "./pages/PendingItemsPage/PendingItemsPage.jsx";
 import AuctionsPage from "./pages/Auctions/AuctionsPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.js";
 function App() {
   return (
     <Router>
@@ -30,6 +31,11 @@ function App() {
         <Route path="/admin/users" element={<UsersPage />} />
         <Route path="/admin/pending-items" element={<PendingItemsPage />} />
         <Route path="/admin/auctions" element={<AuctionsPage />} />
+        <Route path="/place-bid/:auctionId" element={
+          <ProtectedRoute>
+          <PlaceBidPage />
+          </ProtectedRoute>} />
+
 
       </Routes>
     </Router>
