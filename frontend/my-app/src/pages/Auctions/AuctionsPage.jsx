@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BackToDashboardButton from "../HomeButtons/BacktoDashboardButton";
 import { formatTimeRemaining } from "../../utils/time";
+import "./AuctionsPage.css";
 
 function AuctionsPage() {
   const [auctions, setAuctions] = useState([]);
@@ -71,45 +72,86 @@ function AuctionsPage() {
     }
   };
 
+  const getTimeStatus = (timeString) => {
+    if (timeString.includes("ended")) return "ended";
+    if (timeString.includes("hasn't started")) return "pending";
+    return "active";
+  };
+
   return (
-    <div>
-      <BackToDashboardButton />
-      <h1>Live Auctions</h1>
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Current Price</th>
-            <th>Highest Bidder</th>
-            <th>Time Remaining</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {auctions.length > 0 ? (
-            auctions.map((auction) => (
-              <tr key={auction._id}>
-                <td>{auction.itemId?.title || "Unknown"}</td>
-                <td>${auction.highestBid || auction.itemId?.startingPrice || 0}</td>
-                <td>{auction.highestBidder?.username || "No bids yet"}</td>
-                <td>{timeLeft[auction._id] || formatTimeRemaining(auction.endTime)}</td>
-                <td>
-                  <button
-                    style={{ backgroundColor: "red", color: "white", cursor: "pointer" }}
-                    onClick={() => handleDelete(auction._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5">No auctions available</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className="auctions-page">
+      <div className="page-header">
+        <BackToDashboardButton />
+        <div className="header-content">
+          <h1 className="page-title">Live Auctions</h1>
+          <p className="page-subtitle">Monitor and manage all active auctions</p>
+        </div>
+        <div className="auctions-count">
+          <span className="count-number">{auctions.length}</span>
+          <span className="count-label">Total Auctions</span>
+        </div>
+      </div>
+
+      {auctions.length === 0 ? (
+        <div className="empty-state">
+          <h3>No auctions available</h3>
+          <p>There are currently no active auctions to display.</p>
+        </div>
+      ) : (
+        <div className="auctions-container">
+          <div className="auctions-grid">
+            {auctions.map((auction) => {
+              const timeRemaining = timeLeft[auction._id] || formatTimeRemaining(auction.endTime);
+              const timeStatus = getTimeStatus(timeRemaining);
+              
+              return (
+                <div key={auction._id} className="auction-card">
+                  <div className="auction-header">
+                    <h3 className="auction-title">
+                      {auction.itemId?.title || "Unknown Item"}
+                    </h3>
+                    <span className={`status-indicator ${timeStatus}`}>
+                      {timeStatus === "active" ? "Live" : timeStatus === "ended" ? "Ended" : "Pending"}
+                    </span>
+                  </div>
+
+                  <div className="auction-details">
+                    <div className="detail-row">
+                      <span className="detail-label">Current Price</span>
+                      <span className="detail-value price">
+                        ${auction.highestBid || auction.itemId?.startingPrice || 0}
+                      </span>
+                    </div>
+
+                    <div className="detail-row">
+                      <span className="detail-label">Highest Bidder</span>
+                      <span className="detail-value">
+                        {auction.highestBidder?.username || "No bids yet"}
+                      </span>
+                    </div>
+
+                    <div className="detail-row">
+                      <span className="detail-label">Time Remaining</span>
+                      <span className={`detail-value time-remaining ${timeStatus}`}>
+                        {timeRemaining}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="auction-actions">
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(auction._id)}
+                    >
+                      Delete Auction
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

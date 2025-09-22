@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, Package, Gavel, LogOut } from "lucide-react"; 
 import "./Admin.css";
 
 function AdminDashboard() {
@@ -45,29 +44,32 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Admin Dashboard</h1>
+        <div className="header-content">
+          <h1 className="dashboard-title">Admin Dashboard</h1>
+          <p className="dashboard-subtitle">Manage your auction platform</p>
+        </div>
         <button className="logout-button" onClick={handleLogout}>
-          <LogOut size={18} /> Logout
+          Logout
         </button>
       </div>
 
-      <div className="cards-container">
-        <div className="card clickable" onClick={() => navigate("/admin/users")}>
-          <Users size={20} />
-          <h2>{usersCount} Users</h2>
-          <p>Manage all registered users</p>
+      <div className="stats-grid">
+        <div className="stat-card clickable" onClick={() => navigate("/admin/users")}>
+          <div className="stat-number">{usersCount}</div>
+          <div className="stat-label">Total Users</div>
+          <div className="stat-description">Manage all registered users</div>
         </div>
 
-        <div className="card clickable" onClick={() => navigate("/admin/pending-items")}>
-          <Package size={20} />
-          <h2>{pendingItemsCount} Pending Items</h2>
-          <p>Approve or reject items</p>
+        <div className="stat-card clickable" onClick={() => navigate("/admin/pending-items")}>
+          <div className="stat-number">{pendingItemsCount}</div>
+          <div className="stat-label">Pending Items</div>
+          <div className="stat-description">Approve or reject items</div>
         </div>
 
-        <div className="card clickable" onClick={() => navigate("/admin/auctions")}>
-          <Gavel size={20} />
-          <h2>{auctionsCount} Auctions</h2>
-          <p>Monitor all auctions</p>
+        <div className="stat-card clickable" onClick={() => navigate("/admin/auctions")}>
+          <div className="stat-number">{auctionsCount}</div>
+          <div className="stat-label">Active Auctions</div>
+          <div className="stat-description">Monitor all auctions</div>
         </div>
       </div>
     </div>

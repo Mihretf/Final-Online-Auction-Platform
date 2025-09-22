@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { LogOut } from "lucide-react";
 import './Buyer.css'
 
 export default function BuyerDashboard() {
@@ -55,49 +54,86 @@ export default function BuyerDashboard() {
   return (
     <div className="buyer-dashboard">
       <div className="dashboard-header">
-        <h1>Auctions</h1>
+        <div className="header-content">
+          <h1 className="dashboard-title">Auction Marketplace</h1>
+          <p className="dashboard-subtitle">Discover and bid on exclusive items</p>
+        </div>
         <button className="logout-button" onClick={handleLogout}>
-          <LogOut size={18} /> Logout
+          Logout
         </button>
       </div>
 
-      {items.length === 0 && <p>No approved items for auction yet.</p>}
+      {items.length === 0 && (
+        <div className="empty-state">
+          <h3>No auctions available</h3>
+          <p>There are no approved items for auction at the moment. Please check back later.</p>
+        </div>
+      )}
 
-      <div className="auction-items">
-{items.map((auction) => (
-  <div key={auction._id} className="auction-item-card">
-    <h2>{auction.itemId?.title || "No title"}</h2>
-    <p>Category: {auction.itemId?.category || "N/A"}</p>
+      <div className="auction-grid">
+        {items.map((auction) => (
+          <div key={auction._id} className="auction-card">
+            <div className="auction-image">
+              {auction.itemId?.image ? (
+                <img
+                  src={`http://localhost:5000/uploads/${auction.itemId.image}`}
+                  alt={auction.itemId.title}
+                  className="item-image"
+                />
+              ) : (
+                <div className="image-placeholder">
+                  <span>No Image</span>
+                </div>
+              )}
+            </div>
 
-    {/* Show image if exists */}
-    {auction.itemId?.image && (
-      <img
-        src={`http://localhost:5000/uploads/${auction.itemId.image}`}
-        alt={auction.itemId.title}
-        style={{ maxWidth: "200px", margin: "10px 0" }}
-      />
-    )}
+            <div className="auction-content">
+              <div className="auction-header">
+                <h3 className="auction-title">{auction.itemId?.title || "No title"}</h3>
+                <span className="auction-category">{auction.itemId?.category || "N/A"}</span>
+              </div>
 
-    <p>
-      Starting Price: ${auction.itemId?.startingPrice || 0} | 
-      Reserve Price: ${auction.itemId?.reservePrice || 0}
-    </p>
-    <p className="short-description">
-      {auction.itemId?.description?.length > 100
-        ? auction.itemId.description.substring(0, 100) + "..."
-        : auction.itemId?.description || "No description available."}
-    </p>
-    <p className="time-left">
-      Time Left: {getTimeLeft(auction.startTime, auction.endTime)}
-    </p>
+              <div className="price-info">
+                <div className="price-item">
+                  <span className="price-label">Starting Price</span>
+                  <span className="price-value">${auction.itemId?.startingPrice || 0}</span>
+                </div>
+                <div className="price-item">
+                  <span className="price-label">Reserve Price</span>
+                  <span className="price-value">${auction.itemId?.reservePrice || 0}</span>
+                </div>
+              </div>
 
-    <div className="auction-actions">
-      <button onClick={() => handleMoreDescription(auction)}>More Description</button>
-      <button onClick={() => handlePlaceBid(auction)}>Place Bid</button>
-    </div>
-  </div>
-))}
+              <p className="auction-description">
+                {auction.itemId?.description?.length > 120
+                  ? auction.itemId.description.substring(0, 120) + "..."
+                  : auction.itemId?.description || "No description available."}
+              </p>
 
+              <div className="time-remaining">
+                <span className="time-label">Time remaining</span>
+                <span className="time-value">
+                  {getTimeLeft(auction.startTime, auction.endTime)}
+                </span>
+              </div>
+
+              <div className="auction-actions">
+                <button 
+                  className="action-button secondary"
+                  onClick={() => handleMoreDescription(auction)}
+                >
+                  View Details
+                </button>
+                <button 
+                  className="action-button primary"
+                  onClick={() => handlePlaceBid(auction)}
+                >
+                  Place Bid
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
