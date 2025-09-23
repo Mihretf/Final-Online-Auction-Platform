@@ -203,15 +203,15 @@ Collections:
 
 ## 👤 Author
 
-**Mihret Fekadu** – Junior Full-Stack Developer
+* **Mihret Fekadu**
 mihretworku94@gmail.com
-**Obsan Habtamu**
+* **Obsan Habtamu**
 obsanhabtamu0@gmail.com
-**Natnael Tewodros**
+* **Natnael Tewodros**
 Natnaeltewodros03@gmail.com
-**Muaz Kedir**
+* **Muaz Kedir**
 Mkedir3776@gmail.com
-**Ebeshin Terefe**
+* **Ebeshin Terefe**
 terefeebeshin@gmail.com
 
 
