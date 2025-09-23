@@ -1,159 +1,222 @@
-🏷️ Online Auction Platform
+# 🏷️ Online Auction Platform
 
-A secure and transparent online auction system for government agencies, private sellers, and individual bidders.
+*A secure and transparent online auction system for government agencies, private sellers, and individual bidders.*
 
-Project Overview
+---
 
-This platform provides a secure, transparent, and user-friendly space for auctions where government agencies, businesses, and individuals can sell assets such as vehicles, land, buildings, or equipment.
+## 🚀 Project Overview
+
+This platform provides a **secure, transparent, and user-friendly** space for auctions where government agencies, businesses, and individuals can sell assets such as **vehicles, land, buildings, or equipment**.
 Bidders participate remotely, while the system ensures fairness, verifies documents, manages payments, and sends real-time notifications.
 
-Objectives
+**Objectives:**
 
-Enable remote participation for bidders.
-Ensure fairness through secure authentication and verification.
-Streamline document approval, payments, and notifications.
+* Enable **remote participation** for bidders.
+* Ensure **fairness** through secure authentication and verification.
+* Streamline **document approval, payments, and notifications**.
 
-Key Actors
+---
 
-Actor	 Responsibilities
-Bidder (Buyer)	Registers, uploads financial verification, places bids, receives notifications.
-Seller (Auctioneer/Government/Private)	Uploads auction items with legal documents, tracks auction progress.
-Admin	Verifies users, approves/rejects listings, monitors auctions, manages disputes.
+## 👥 Key Actors
 
- Core Features (Planned & In Progress)
+| Actor                                      | Responsibilities                                                                |
+| ------------------------------------------ | ------------------------------------------------------------------------------- |
+| **Bidder (Buyer)**                         | Registers, uploads financial verification, places bids, receives notifications. |
+| **Seller (Auctioneer/Government/Private)** | Uploads auction items with legal documents, tracks auction progress.            |
+| **Admin**                                  | Verifies users, approves/rejects listings, monitors auctions, manages disputes. |
 
- Secure User Registration with JWT authentication.
- Role-Based Access Control (Bidder, Seller, Admin).
- Item Listing & Legal Document Verification.
- Manual & Auto-Bidding (Proxy Bid System).
- Payment Integration (entry fees & final settlement).
- Notifications via Email/SMS & future WebSocket support.
- Audit Logging for all critical actions.
- AI-Powered Chatbot (“Auction Buddy”) to answer FAQs, guide users, and recommend items (planned).
+---
 
-User Flows
-Bidder
+## 🌟 Core Features
 
-Browse auctions on landing page.
-Register/login & upload bank statement (≥50% of bid value).
-Pay participation fee (if required).
-Choose bidding mode: manual or proxy bid.
-Submit bids and receive real-time updates (success/outbid/closing soon).
-Complete payment if auction is won → receive invoice.
+* ✅ **Secure User Registration** with JWT authentication.
+* ✅ **Role-Based Access Control** (Bidder, Seller, Admin).
+* ✅ **Item Listing & Legal Document Verification**
+* ⚡ **Manual & Auto-Bidding (Proxy Bid System)**
+* 💳 **Payment Integration** (entry fees & final settlement)
+* 🔔 **Notifications** via Email/SMS & future WebSocket support
+* 🛡️ **Audit Logging** for all critical actions
+* 🤖 **AI-Powered Chatbot (“Auction Buddy”)** for guidance, FAQs, and recommendations (planned)
 
-Seller
+---
 
-Register/login.
-Upload item details, images, and legal documents.
-Wait for Admin approval.
-Track bids & receive payment after auction closure.
+## 🔄 User Flows
 
-Admin
+### 🟢 Bidder Flow
 
-Approve/reject user registrations and listings.
-Monitor auctions and resolve disputes.
-Generate audit logs and system analytics.
+1. Browse auctions on landing page
+2. Register/login & upload bank statement (≥50% of bid value)
+3. Pay participation fee (if required)
+4. Choose bidding mode: **manual** or **proxy bid**
+5. Submit bids → status pending
+6. Receive notifications (outbid alerts, auction closing)
+7. If won → complete payment → receive invoice
 
-Technical Implementation
+### 🟠 Seller Flow
 
-Backend: Node.js, Express.js, MongoDB (with Mongoose ODM)
-Frontend: React.js (planned integration)
-Database Hosting: MongoDB Atlas
-Authentication: JWT
-Version Control: Git/GitHub
-API Documentation: Strict documentation enforced for smooth backend collaboration.
+1. Register/login
+2. Upload item details, images, and legal documents
+3. Submit listing → pending admin approval
+4. Track auction progress
+5. Receive payment after auction closes
 
-Development Challenges
+### 🔵 Admin Flow
 
-This project was built collaboratively by a distributed team, presenting unique technical hurdles:
+1. Login as pre-created admin
+2. Approve/reject user registrations and item listings
+3. Monitor active auctions
+4. Resolve disputes
+5. Generate audit logs
+6. View system analytics
 
-Shared Database on MongoDB Atlas:
-Setting up a common database for all team members while working on individual local servers required careful configuration and role management.
+---
 
-Strict API Documentation:
-Since we haven’t implemented microservices yet, team members were heavily dependent on each other’s endpoints.
-Clear, strict API contracts were critical to prevent breaking changes.
+## 🗂️ Folder Structure
 
-Future Real-Time Features:
-WebSockets are planned for live bidding alerts, but currently handled with email/SMS notifications.
+```
+online-auction-platform/
+│
+├── backend/
+│   ├── controllers/       # API route handlers
+│   ├── models/            # Mongoose models (Users, Items, Auctions, etc.)
+│   ├── routes/            # Express routes
+│   ├── middleware/        # Authentication & authorization
+│   ├── utils/             # Helper functions (email, payment, notifications)
+│   ├── config/            # Database and environment config
+│   ├── server.js          # Entry point
+│   └── package.json
+│
+├── frontend/              # (Planned) React app
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── .env                   # Environment variables (Mongo URI, JWT secret)
+├── README.md
+└── .gitignore
+```
 
-These challenges significantly strengthened our teamwork, documentation discipline, and problem-solving skills.
+---
 
-Database Schema
+## 📡 API Endpoints
 
-View the full database diagram here: https://dbdiagram.io/d/DB-schema-68a36d2fec93249d1e2002f5
+### Authentication
 
-Key collections:
+| Method | Endpoint             | Description                     |
+| ------ | -------------------- | ------------------------------- |
+| POST   | `/api/auth/register` | Create new user (bidder/seller) |
+| POST   | `/api/auth/login`    | Login user and return JWT       |
 
-Users – role-based access (bidder/seller/admin), verification documents.
+### Items
 
-Items – auction items with legal attachments.
+| Method | Endpoint         | Description                         |
+| ------ | ---------------- | ----------------------------------- |
+| POST   | `/api/items`     | Create new auction item (seller)    |
+| GET    | `/api/items`     | Fetch all items                     |
+| GET    | `/api/items/:id` | Fetch single item with auction info |
+| PATCH  | `/api/items/:id` | Update item (seller/admin)          |
+| DELETE | `/api/items/:id` | Delete item (admin only)            |
 
-Auctions – tracks bidding timelines and winners.
+### Auctions
 
-Bids – stores all bid activity with proxy support.
+| Method | Endpoint            | Description                |
+| ------ | ------------------- | -------------------------- |
+| POST   | `/api/auctions`     | Create auction for an item |
+| GET    | `/api/auctions`     | Fetch all auctions         |
+| PATCH  | `/api/auctions/:id` | Update auction status      |
+| DELETE | `/api/auctions/:id` | Delete auction             |
 
-Payments – secure transaction records.
+### Bids
 
-Notifications – email/SMS/in-app alerts.
+| Method | Endpoint                    | Description               |
+| ------ | --------------------------- | ------------------------- |
+| POST   | `/api/bids/place`           | Place manual or proxy bid |
+| GET    | `/api/bids/highest/:itemId` | Fetch current highest bid |
 
-AuditLogs – admin actions for transparency.
+### Payments
 
-🔮 Future Enhancements
+| Method | Endpoint                 | Description                  |
+| ------ | ------------------------ | ---------------------------- |
+| POST   | `/api/payments/initiate` | Initiate payment for auction |
+| GET    | `/api/payments/history`  | Get payment history          |
 
-Microservices Architecture for scalability and modular deployment.
+### Admin
 
-Real-Time WebSocket Bidding for instant updates.
+| Method | Endpoint            | Description                 |
+| ------ | ------------------- | --------------------------- |
+| GET    | `/api/users`        | Fetch all users             |
+| PUT    | `/api/users/:id`    | Update user                 |
+| DELETE | `/api/users/:id`    | Delete user                 |
+| PATCH  | `/api/items/:id`    | Approve/reject item listing |
+| PATCH  | `/api/auctions/:id` | Admin auction control       |
 
-AI-Powered Auction Buddy chatbot for guidance and recommendations.
+---
 
-Advanced Analytics Dashboard for admins and sellers.
+## 🧪 Postman Testing Workflow
 
-⚡ Team & Collaboration
+### 0️⃣ Preliminaries
 
-This project is being developed by a team of junior full-stack developers as part of a collaborative learning program.
-We emphasize:
-
-Agile workflows (clear documentation, Git branching strategy).
-
-Code reviews for consistency.
-
-Shared resources (MongoDB Atlas, strict API contracts).
-
-🛠️ Setup & Installation
-
-Clone the repository
-
-git clone https://github.com/<your-username>/online-auction-platform.git
-cd online-auction-platform
-
-
-Install dependencies
-
-npm install
-
-
-Set environment variables
-Create a .env file with:
-
-MONGO_URI=<Your MongoDB Atlas URI>
-JWT_SECRET=<Your Secret Key>
-
-
-Run the backend
-
+```bash
 npm run dev
+# or
+node server.js
+```
 
-Current Status
+* Ensure MongoDB is running and `.env` is configured
+* Create a collection in Postman: **Marvel Auction Test**
 
-In Development – Core backend (authentication, bidding logic, and database)and Frontend integration are functional.
-AI chatbot and websocket features are planned for upcoming sprints.
+### Steps
 
-👤 Author
+1. **Register Users** → 5 sellers + 5 bidders
+2. **Login Users** → save JWT tokens
+3. **Create Items** → sellers add items
+4. **Create Auctions** → schedule auctions
+5. **Fetch Items/Auctions** → verify listings
+6. **Place Bids** → manual & proxy bids
+7. **Check Highest Bid** → ensure bid logic works
+8. **Complete Auction** → simulate closing
+9. **Payment** → winner initiates payment, simulate callback
+10. **Payment History** → verify transactions
+11. **Admin Actions** → approve users/items, analytics
+12. **Test Edge Cases** → invalid bids, unauthorized access
 
-Mihret Fekadu mihretworku94@gmail.com
-Obsan Habtamu obsanhabtamu0@gmail.com
-Natnael Tewodros Natnaeltewodros03@gmail.com
-Muaz Kedir Mkedir3776@gmail.com
-Ebeshin Terefe terefeebeshin@gmail.com
+---
+
+## 🗄️ Database Schema
+
+[View DB Diagram](https://dbdiagram.io/d/DB-schema-68a36d2fec93249d1e2002f5)
+
+Collections:
+
+* Users, Items, Auctions, Bids, Payments, Notifications, AuditLogs
+
+---
+
+## 🔮 Future Enhancements
+
+* Microservices for modular development
+* Real-time WebSocket updates for bids
+* AI-powered Auction Buddy chatbot
+* Advanced analytics dashboard for admins and sellers
+
+---
+
+## 👤 Author
+
+**Mihret Fekadu** – Junior Full-Stack Developer
+mihretworku94@gmail.com
+**Obsan Habtamu**
+obsanhabtamu0@gmail.com
+**Natnael Tewodros**
+Natnaeltewodros03@gmail.com
+**Muaz Kedir**
+Mkedir3776@gmail.com
+**Ebeshin Terefe**
+terefeebeshin@gmail.com
+
+
+
+
+---
+
 
