@@ -65,12 +65,34 @@ async function getMyItems(sellerId) {
     return await Item.find({ sellerId }).sort({ createdAt: -1 });
 }
 
+async function approveItem(itemId) {
+    const item = await Item.findById(itemId);
+    if (!item) throw new Error('Item not found');
+
+    item.status = 'approved'; // mark as approved
+    await item.save();
+
+    // Optionally, create an auction immediately
+    const Auction = require('./AuctionsModel'); // make sure path is correct
+    const auctionStart = new Date(); // you can adjust
+    const auctionEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+    await Auction.create({
+        itemId: item._id,
+        startTime: auctionStart,
+        endTime: auctionEnd,
+        status: 'scheduled',
+    });
+
+    return item;
+}
+
 
 // Export all service functions for use in controllers
 module.exports = {
     createItem,
     getAllItems,
     getItemById,
+    approveItem,
     updateItem,
     deleteItem,
     getMyItems,

@@ -1,0 +1,123 @@
+/* PendingItemsPage.css */
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f8fafc;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 2rem;
+  color: #1e293b;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto 4rem auto;
+}
+
+.item-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.item-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.item-title {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.item-description {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.2;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.4em; /* 2 lines */
+}
+
+.item-owner {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.item-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+button {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+button.approve {
+  background: #22c55e;
+  color: white;
+}
+
+button.approve:hover {
+  background: #16a34a;
+}
+
+button.reject {
+  background: #ef4444;
+  color: white;
+}
+
+button.reject:hover {
+  background: #b91c1c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .items-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .item-card img {
+    height: 100px;
+  }
+}

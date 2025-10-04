@@ -1,0 +1,58 @@
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.user-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.user-card:hover {
+  transform: scale(1.03);
+  border-color: #888;
+}
+
+.user-name {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.user-email,
+.user-role,
+.user-status {
+  margin: 2px 0;
+  font-size: 11px;
+}
+
+.user-actions {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.user-actions button {
+  padding: 3px 5px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-actions button.approve {
+  background-color: #4caf50;
+  color: white;
+}
+
+.user-actions button.reject {
+  background-color: #f44336;
+  color: white;
+}
