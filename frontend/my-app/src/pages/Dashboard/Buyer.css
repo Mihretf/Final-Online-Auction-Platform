@@ -273,3 +273,46 @@
     flex-direction: column;
   }
 }
+
+
+@media (max-width: 768px) {
+  .buyer-dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+  }
+
+  .auction-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .auction-card {
+    max-width: none;
+  }
+
+  .auction-content {
+    padding: 1rem;
+  }
+
+  .price-info {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .auction-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+}
